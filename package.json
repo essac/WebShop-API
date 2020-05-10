@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/luxLX2/WebShopAPI/issues"
   },
-  "homepage": "https://github.com/luxLX2/WebShopAPI#readme"
+  "homepage": "https://github.com/luxLX2/WebShopAPI#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
