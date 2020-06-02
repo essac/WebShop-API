@@ -14,7 +14,11 @@ function routes() {
         .get(controller.get)
         .put(controller.put)
         .delete(controller.remove);
+
     orderRouter.route('/orderByOrderNumber')
+        .get(controller.get)
+    
+    orderRouter.route('/ordersByCustomerId')
         .get(controller.get)
 
     return orderRouter;

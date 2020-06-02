@@ -57,7 +57,6 @@ addBodyParameters = (req) => {
             else if (typeof req.body[param] === 'string')
                 parameters += `, @${param}='${req.body[param]}'`;
         }
-        console.log('TEST =>', parameters)
     });
 
     if (req.hasId) {
@@ -96,7 +95,6 @@ createQuery = (req, removeEnding = null) => {
     addParameters(req);
     if (req.method !== 'GET') addBodyParameters(req);
     req.sql = `EXEC ${req.sql}`;
-    console.log('===>>>>>', req.sql)
 };
 
 callDatabase = async (req, res) => {
@@ -135,7 +133,7 @@ createHateoasLinks = (req, records, hateoas) => {
                 record.links[link.property.toLowerCase() == 'id' ? 'self' : link.property.toLowerCase()] =
                 `http://${req.headers.host}/api/${link.endpoint}/${record[link.property]}`
             else
-                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/${record[link.property]}`
+                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/${req.urlParameters||record[link.property]}`
         });
         return record;
     });
@@ -150,17 +148,13 @@ get = async (req, res, removeEnding) => {
 
         if (req.endpoint.toLowerCase() === 'promotypes') {
             req.endpoint = req.endpoint.substring(0, req.endpoint.length - 1);
-
-            let hateoas = [{
-                property: 'Id',
-                endpoint: `${req.endpoint}`
-            }];
         }
 
         let hateoas = [{
             property: 'Id',
             endpoint: `${req.endpoint}`
         }];
+
         const records = createHateoasLinks(req, result, hateoas);
 
         return res.json(req.hasId > 0 || req.queryParamCount > 1 ? records[0] : records);
