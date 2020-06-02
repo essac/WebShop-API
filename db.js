@@ -75,6 +75,8 @@ createQuery = (req, removeEnding = null) => {
 
     if (req.hasId && removeEnding && req.method === 'GET') {
         req.sql = `${method}${req.endpoint.split(removeEnding)[0]} `;
+    } else if (req.endpoint.toLowerCase() === 'customers' && req.queryParamCount >= 1) {
+        req.sql = `${method}${req.endpoint.substring(0, req.endpoint.length - 1)} `;
     } else if (req.endpoint.toLowerCase() === 'basiccarts') {
         req.sql = `${method}${req.endpoint.substring(0, req.endpoint.length - 1)} `;
     } else if (req.endpoint.toLowerCase() === 'favoritescounts') {
