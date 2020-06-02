@@ -1,7 +1,7 @@
 const config = {
     user: 'ashour',
-    password: 'Ocikiq1989107',
-    server: 'myschoolcourse.database.windows.net',
+    password: 'JustMyPassword!',
+    server: 'mycourse20ecu.database.windows.net',
     database: 'Webshop'
 }
 
