@@ -15,13 +15,13 @@ const routes = () => {
         .delete(controller.remove);
     
     productRouter.route('/ProductsByBrandId')
-        .get(controller.get)
+        .get(controller.get);
     
     productRouter.route('/ProductsByGreaterThanOrEqualStars')
-        .get(controller.get)
+        .get(controller.get);
     
     productRouter.route('/ProductsByLessThanOrEqualStars')
-        .get(controller.get)
+        .get(controller.get);
 
     return productRouter;
 };

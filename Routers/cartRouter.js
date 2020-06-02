@@ -12,7 +12,7 @@ const routes = () => {
         .delete(controller.remove);
     
     cartRouter.route('/CartProductsByCustomerId')
-        .get(controller.get)
+        .get(controller.get);
 
     return cartRouter;
 };

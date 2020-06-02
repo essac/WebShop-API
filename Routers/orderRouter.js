@@ -16,10 +16,10 @@ function routes() {
         .delete(controller.remove);
 
     orderRouter.route('/orderByOrderNumber')
-        .get(controller.get)
-    
+        .get(controller.get);
+
     orderRouter.route('/ordersByCustomerId')
-        .get(controller.get)
+        .get(controller.get);
 
     return orderRouter;
 }
