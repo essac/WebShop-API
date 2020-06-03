@@ -3,7 +3,7 @@ const db = require('../db');
 productImagesController = () => {
     get = async (req, res) => {
         try {
-            const records = await db.get(req, res);
+            const records = await db.get(req, res, 's');
 
             if (records.length == 0) {
                 res.status(404);

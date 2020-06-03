@@ -16,7 +16,7 @@ promoTypesController = () => {
         };
     };
 
-    post = async (req, res,) => {
+    post = async (req, res) => {
         try {
             return await db.modify(req, res, 's');
         } catch (err) {

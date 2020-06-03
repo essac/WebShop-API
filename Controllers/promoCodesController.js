@@ -3,7 +3,7 @@ const db = require('../db');
 promoCodesController = () => {
     get = async (req, res) => {
         try {
-            const records = await db.get(req, res);
+            const records = await db.get(req, res,'s');
 
             if (records.length == 0) {
                 res.status(404);
@@ -16,7 +16,7 @@ promoCodesController = () => {
         };
     };
 
-    post = async (req, res, ) => {
+    post = async (req, res) => {
         try {
             return await db.modify(req, res, 's');
         } catch (err) {
@@ -27,7 +27,7 @@ promoCodesController = () => {
 
     put = async (req, res) => {
         try {
-            return await db.modify(req, res);
+            return await db.modify(req, res, 's');
         } catch (err) {
             res.status(500);
             return res.send('Unable to update.');
@@ -36,7 +36,7 @@ promoCodesController = () => {
 
     remove = async (req, res) => {
         try {
-            await db.modify(req, res);
+            await db.modify(req, res, 's');
         } catch (err) {
             console.log(err);
             res.status(500);

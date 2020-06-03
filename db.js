@@ -95,6 +95,7 @@ createQuery = (req, removeEnding = null) => {
     addParameters(req);
     if (req.method !== 'GET') addBodyParameters(req);
     req.sql = `EXEC ${req.sql}`;
+    console.log('EXEC =>', req.sql)
 };
 
 callDatabase = async (req, res) => {
