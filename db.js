@@ -132,13 +132,17 @@ createHateoasLinks = (req, records, hateoas) => {
         let hasspecialCase = specialCase.includes(req.endpoint.toLowerCase());
 
         hateoas.forEach((link) => {
+            let baseUrl = `http://${req.headers.host}/api/${link.endpoint}/`;
+
+            let propVerify = (record[link.property] !== undefined && record[link.property2] !== undefined) ? true : false;
+
             if (req.hasId) {
                 record.links[link.property.toLowerCase() == 'id' ? 'self' : link.property.toLowerCase()] =
-                    `http://${req.headers.host}/api/${link.endpoint}/${record[link.property]}`
-            } else if (hasspecialCase && ((record[link.property] !== null && record[link.property2] !== null))) {
-                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/?${[link.property]}=${record[link.property]}&${[link.property2]}=${record[link.property2]}`
+                    `${baseUrl}${record[link.property]}`
+            } else if (hasspecialCase && propVerify) {
+                record.links['self'] = `${baseUrl}?${[link.property]}=${record[link.property]}&${[link.property2]}=${record[link.property2]}`
             } else {
-                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/${req.urlParameters || record[link.property]}`
+                record.links['self'] = `${baseUrl}${req.urlParameters || record[link.property]}`
             }
         });
         return record;
