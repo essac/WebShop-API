@@ -147,7 +147,6 @@ createHateoasLinks = (req, records, hateoas) => {
 
 get = async (req, res, removeEnding) => {
     try {
-
         createQuery(req, removeEnding);
         const result = await callDatabase(req, res);
 

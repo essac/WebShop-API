@@ -3,7 +3,7 @@ const db = require('../db');
 countriesController = () => {
     get = async (req, res) => {
         try {
-            const records = await db.get(req, res, 'y');
+            const records = await db.get(req, res);
 
             if (records.length == 0) {
                 res.status(404);
