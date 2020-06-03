@@ -95,7 +95,6 @@ createQuery = (req, removeEnding = null) => {
     addParameters(req);
     if (req.method !== 'GET') addBodyParameters(req);
     req.sql = `EXEC ${req.sql}`;
-    console.log('EXEC =>', req.sql)
 };
 
 callDatabase = async (req, res) => {
@@ -129,12 +128,18 @@ createHateoasLinks = (req, records, hateoas) => {
     return records.recordset.map((record) => {
         record.links = {};
 
+        let specialCase = ['productcategories', 'reviews', 'favorites', 'cartproducts'];
+        let hasspecialCase = specialCase.includes(req.endpoint.toLowerCase());
+
         hateoas.forEach((link) => {
-            if (req.hasId)
+            if (req.hasId) {
                 record.links[link.property.toLowerCase() == 'id' ? 'self' : link.property.toLowerCase()] =
-                `http://${req.headers.host}/api/${link.endpoint}/${record[link.property]}`
-            else
-                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/${req.urlParameters||record[link.property]}`
+                    `http://${req.headers.host}/api/${link.endpoint}/${record[link.property]}`
+            } else if (hasspecialCase && ((record[link.property] !== null && record[link.property2] !== null))) {
+                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/?${[link.property]}=${record[link.property]}&${[link.property2]}=${record[link.property2]}`
+            } else {
+                record.links['self'] = `http://${req.headers.host}/api/${link.endpoint}/${req.urlParameters || record[link.property]}`
+            }
         });
         return record;
     });
@@ -142,6 +147,7 @@ createHateoasLinks = (req, records, hateoas) => {
 
 get = async (req, res, removeEnding) => {
     try {
+
         createQuery(req, removeEnding);
         const result = await callDatabase(req, res);
 
@@ -151,10 +157,38 @@ get = async (req, res, removeEnding) => {
             req.endpoint = req.endpoint.substring(0, req.endpoint.length - 1);
         }
 
-        let hateoas = [{
-            property: 'Id',
-            endpoint: `${req.endpoint}`
-        }];
+        let hateoas = [];
+
+        if (req.endpoint.toLowerCase() === 'productcategories') {
+            hateoas = [{
+                property: 'ProductId',
+                property2: 'CategoryId',
+                endpoint: `${req.endpoint}`
+            }]
+        } else if (req.endpoint.toLowerCase() === 'reviews') {
+            hateoas = [{
+                property: 'ProductId',
+                property2: 'CustomerId',
+                endpoint: `${req.endpoint}`
+            }]
+        } else if (req.endpoint.toLowerCase() === 'favorites') {
+            hateoas = [{
+                property: 'ProductId',
+                property2: 'CustomerId',
+                endpoint: `${req.endpoint}`
+            }]
+        } else if (req.endpoint.toLowerCase() === 'cartproducts') {
+            hateoas = [{
+                property: 'CustomerId',
+                property2: 'ProductId',
+                endpoint: `${req.endpoint}`
+            }]
+        } else {
+            hateoas = [{
+                property: 'Id',
+                endpoint: `${req.endpoint}`
+            }];
+        }
 
         const records = createHateoasLinks(req, result, hateoas);
 
