@@ -3,7 +3,7 @@
 An API with Controllers and routes for all the tables in the Azure SQL Database. 
 Includes CRUD operations for most of the tables in the databse.
 
-**Project Contains:**
+**Used in the project:**
 * Node.js.
 * Express.
 * ESLint.
