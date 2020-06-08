@@ -1,6 +1,6 @@
-## WebShop API
+## Webshop Application With Controllers & Routes.
 
-API with Controllers and routes for all the tables in the Azure SQL Database. 
+API with controllers and routes for all the tables in the Azure SQL Database. 
 Includes CRUD operations for most of the tables in the databse.
 
 **Used in the project:**
